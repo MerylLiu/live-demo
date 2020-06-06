@@ -52,17 +52,6 @@ public class VideoUtil {
 
         FrameRecorder recorder;
         recorder = FrameRecorder.createDefault(outputPath, width, height);   //输出路径，画面高，画面宽
-        recorder.setInterleaved(true);
-        // 降低编码延时
-        recorder.setVideoOption("tune", "zerolatency");
-        // 提升编码速度
-        recorder.setVideoOption("preset", "ultrafast");
-        // 视频质量参数(详见 https://trac.ffmpeg.org/wiki/Encode/H.264)
-        recorder.setVideoOption("crf", "28");
-        // 分辨率
-        recorder.setVideoBitrate(2000000);
-
-        // 视频编码格式
         recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);  //设置编码格式
         recorder.setFormat("flv");
         recorder.setFrameRate(v_rs);
@@ -84,14 +73,6 @@ public class VideoUtil {
                 e.printStackTrace();
             }
         }
-
-        // 解决音视频同步导致的延时问题
-        Field field = recorder.getClass().getDeclaredField("oc");
-        field.setAccessible(true);
-        AVFormatContext oc = (AVFormatContext)field.get(recorder);
-        oc.max_interleave_delta(100);
-
-        grabber.flush();
 
         if (isPreview) {
             //直播效果展示窗口
@@ -127,9 +108,7 @@ public class VideoUtil {
             }
         }
 
-        recorder.release();
         recorder.close();
-        grabber.release();
         grabber.close();
     }
 }
