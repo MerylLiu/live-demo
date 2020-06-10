@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: root
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite::resource:db/live-push.db
+    username:
+    password:
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 2000

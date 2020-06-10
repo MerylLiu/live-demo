@@ -5,3 +5,11 @@ server:
 spring:
   profiles:
     active: @spring.profile.active@
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+
+  messages:
+    encoding: UTF-8
