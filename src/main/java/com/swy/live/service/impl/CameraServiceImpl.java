@@ -20,7 +20,7 @@ public class CameraServiceImpl extends BaseServiceImpl implements CameraService 
 
     @Override
     public KendoResult getCameraPaged(Map params) {
-        KendoResult data = QueryUtil.getRecordsPaged("camera.getCameraPaged", params, 2, 3);
+        KendoResult data = QueryUtil.getRecordsPaged("camera.getCameraPaged", params, 1, 3);
         return data;
     }
 }
