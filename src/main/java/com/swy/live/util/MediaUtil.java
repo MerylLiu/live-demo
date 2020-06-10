@@ -1,12 +1,9 @@
-package com.meryl.live.util;
+package com.swy.live.util;
 
 import org.bytedeco.ffmpeg.avcodec.AVPacket;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
-import org.bytedeco.ffmpeg.global.avcodec;
-import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacv.*;
-import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.global.opencv_objdetect;
 import org.bytedeco.opencv.opencv_core.IplImage;
 import org.slf4j.Logger;
@@ -14,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static java.lang.Thread.MAX_PRIORITY;
 import static org.bytedeco.ffmpeg.global.avcodec.av_packet_unref;
 
 public class MediaUtil {

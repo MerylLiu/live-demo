@@ -1,6 +1,6 @@
-package com.meryl.live;
+package com.swy.live;
 
-import com.meryl.live.util.MediaUtil;
+import com.swy.live.util.MediaUtil;
 
 public class JavavcCameraTest {
     public static void main(String[] args) throws Exception, InterruptedException {
