@@ -3,17 +3,8 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite::resource:db/live-push.db
     username:
     password:
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connection-timeout: 2000
-      minimum-idle: 5
-      maximum-pool-size: 12
-      idle-timeout: 30000
-      max-lifetime: 120000
-      auto-commit: true
 
 debug: true

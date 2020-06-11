@@ -5,11 +5,19 @@ server:
 spring:
   profiles:
     active: @spring.profile.active@
-
   thymeleaf:
     cache: false
-    mode: HTML
-    encoding: UTF-8
-
-  messages:
-    encoding: UTF-8
+    mode: LEGACYHTML5
+    servlet:
+      content-type: text/html
+    prefix: classpath:/templates/
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 2000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 30000
+      max-lifetime: 120000
+      auto-commit: true

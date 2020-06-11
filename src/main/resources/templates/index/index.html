@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+    <div class="main-layout" id='main-layout'>
+        <!--侧边栏-->
+        <div class="main-layout-side">
+            <div class="m-title">
+                <img th:src="@{/images/logo.png}" class="m-logo">
+                流媒体管理中心
+            </div>
+            <ul class="layui-nav layui-nav-tree" lay-filter="leftNav" lay-shrink="all">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" th:data-url="@{/stream/index}" data-id='1' data-text="推流列表">
+                        <i class="iconfont">&#xe608;</i>推流列表
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" th:data-url="@{/stream/pulled}" data-id='2' data-text="拉流列表">
+                        <i class="iconfont">&#xe60d;</i>拉流列表
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--右侧内容-->
+        <div class="main-layout-container">
+            <!--头部-->
+            <div class="main-layout-header">
+                <div class="menu-btn" id="hideBtn">
+                    <a href="javascript:;">
+                        <span class="iconfont">&#xe60e;</span>
+                    </a>
+                </div>
+                <ul class="layui-nav" lay-filter="rightNav">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统">
+                            <i class="iconfont">&#xe603;</i>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息"
+                           th:text="${currUser?.username}"></a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0);" id="btn-logout" th:data-url="@{/logout}">退出</a>
+                    </li>
+                </ul>
+            </div>
+            <!--主体内容-->
+            <div class="main-layout-body">
+                <!--tab 切换-->
+                <div class="layui-tab layui-tab-brief main-layout-tab table_navigation" lay-filter="tab"
+                     lay-allowClose="true">
+                    <ul class="layui-tab-title ul_navigation">
+                        <li class="layui-this welcome">主页</li>
+                    </ul>
+                    <ul class="layui-ui-custom">
+                        <li>
+                            <a href="javascript:;" layadmin-event="refresh" title="刷新" id="refresh">
+                                <i class="layui-icon layui-icon-refresh-3"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
+                            <!--1-->
+                            <iframe th:src="@{/home}" width="100%" height="100%" name="iframe" scrolling="auto"
+                                    class="iframe" framborder="0"></iframe>
+                            <!--1end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--遮罩-->
+        <div class="main-mask">
+
+        </div>
+    </div>
+    <style>
+        .layui-ui-custom {
+            width: 3%;
+            background: #fff;
+            position: absolute;
+            left: 97%;
+            z-index: 98;
+            top: 0px;
+        }
+
+        .layui-ui-custom > li {
+            line-height: 39px;
+        }
+
+        .table_navigation .ul_navigation {
+            padding-right: 0px !important;
+            width: 97%;
+        }
+    </style>
+    <script type="text/javascript">
+        var scope = {
+            link: '/home'
+        }
+    </script>
+    <script th:src="@{/layui/layui.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/common.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{/js/main.js}" type="text/javascript" charset="utf-8"></script>
+</div>

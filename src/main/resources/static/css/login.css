@@ -1,0 +1,187 @@
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: url("../images/login/login_line.jpg") left center repeat-x;
+    height: 100%;
+}
+
+/*移除表单填充色*/
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #ececec inset;
+}
+
+/*按钮移上去颜色*/
+.layui-btn-primary:hover {
+    border-color: #1E9FFF;
+    color: #333;
+}
+
+.btn-login {
+    height: 48px;
+    line-height: 48px;
+}
+
+/*页面背景色*/
+.m-login-bg {
+    background: url("../images/login/bg.jpg") left center repeat-x;
+    height: 100%;
+    background-size: 100% 100%;
+}
+
+.m-login {
+    width: 390px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -195px;
+    margin-top: -205px;
+    padding-bottom: 60px;
+    z-index: 100;
+}
+
+.m-login h3 {
+    color: #000;
+    text-align: center;
+    height: 60px;
+    font-size: 28px;
+}
+
+.m-login .login-plat {
+    text-align: center;
+    color: #8D8D8D;
+}
+
+.m-login .copyright {
+    text-align: center;
+    color: #999;
+    padding-top: 10px;
+}
+
+.m-login-warp {
+    background: #fff;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    padding: 25px 25px 40px;
+}
+
+.m-login-warp .layui-input {
+    height: 40px;
+    line-height: 40px \9;
+    margin-bottom: 5px;
+    -webkit-transition-property: none;
+    transition-property: none;
+    /*background: #ececec;*/
+    border: 1px solid #ececec;
+}
+
+.m-login-warp .m-login-btn .layui-inline {
+    width: 49%;
+    margin: 0;
+}
+
+.m-login-warp .m-login-btn .layui-inline button {
+    width: 100%;
+}
+
+.m-login-warp .verifyImg {
+    width: 130px;
+    height: 42px;
+}
+
+@media screen and (max-width: 450px) {
+    .m-login {
+        width: 300px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -240px;
+    }
+
+    .layui-form-item .layui-inline {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 20px;
+        clear: both;
+    }
+
+    .m-login-warp .m-login-btn .layui-inline {
+        width: 100%;
+        margin: 0 0 10px;
+    }
+}
+
+.captcha-wrapper {
+    z-index: 1000;
+}
+
+
+.footer {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    position: fixed;
+    bottom: 0;
+    background: transparent url(../images/login/footer-bg.png);
+    z-index: 100;
+}
+
+.footer0 {
+    width: 1200px;
+    height: 60px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #adacac
+}
+
+.footer0 a {
+    color: #adacac
+}
+
+.footer_l {
+    float: left
+}
+
+.footer_r {
+    float: right
+}
+
+
+#cloud {
+    background: url(../images/login/cloud.png) repeat;
+    width: 100%;
+    height: 356px;
+    position: absolute;
+    bottom: -30px;
+    -webkit-animation: cloud 60s linear infinite alternate;
+    -moz-animation: clouds 60s linear infinite alternate;
+    z-index: 99;
+}
+
+@-webkit-keyframes cloud {
+    0% {
+        background-position: top left
+    }
+    100% {
+        background-position: top right
+    }
+}
+
+@-moz-keyframes clouds {
+    0% {
+        background-position: top left
+    }
+    100% {
+        background-position: top right
+    }
+}
+
+
+.vdt-pop {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+}

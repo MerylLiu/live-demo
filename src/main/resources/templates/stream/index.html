@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+    <div class="page-content-wrap">
+        <form class="tool-bar">
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-sm layui-btn-normal btn-add hidden-xs"
+                        th:data-url="@{addPush}"><i class="layui-icon">&#xe61f;</i> 拉流分发
+                </button>
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="name" placeholder="请输入名称" autocomplete="off" class="layui-input"
+                       id="app-name">
+            </div>
+            <button class="layui-btn layui-btn-normal layui-btn-sm" lay-submit lay-filter="formSearch"
+                    data-table-id="stream-table">搜索
+            </button>
+        </form>
+        <table class="layui-table"
+               lay-data="{url:'pushedList', page:true, id:'stream-table',height:'full-100',limit:20,
+                       request:{pageName: 'page',limitName: 'pageSize'},
+                       response:{statusName: 'errCode',statusCode: 0,msgName: 'errMsg',countName: 'total'}}"
+               lay-filter="apps">
+            <thead>
+            <tr>
+                <!--                <th lay-data="{type:'checkbox', fixed: 'left'}"></th>-->
+                <th lay-data="{field:'id', type:'numbers'}">序号</th>
+                <th lay-data="{field:'name', sort:true, width:200}">名称</th>
+                <th lay-data="{field:'rtmp', sort:true}">播放地址</th>
+                <th lay-data="{field:'rtsp', sort:true}">源地址</th>
+                <th lay-data="{field:'create_date', width:180, sort: true, templet:function(d){return new Date(d.create_date).format('yyyy-MM-dd HH:mm');},align:'center'}">
+                    创建日期
+                </th>
+                <th lay-data="{field:'id', width:80, templet:'#stopTpl',align:'center'}">操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        layui.use(['table', 'layer', 'jquery', 'code'], function () {
+            var $ = layui.$;
+
+            $('.layui-btn').on('click', function () {
+                var id = $(this).data('id');
+                layer.confirm('您确定要删除选中项么', {icon: 3, title: '提示'}, function (index) {
+                    var params = {
+                        "id": id
+                    };
+                    $.post('stopPush', JSON.stringify(params), function (res) {
+                        if (res && res.errCode == 0) {
+                            layer.msg('操作成功', {time: 500});
+                        } else {
+                            layer.alert(res.errMsg, {icon: 2})
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script type="text/html" id="stopTpl">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="stop" data-id="{{d.id}}">
+            <i class="layui-icon layui-icon-pause"></i>停止
+        </a>
+    </script>
+
+</div>
+

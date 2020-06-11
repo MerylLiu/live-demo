@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+    <div class="page-content-wrap clearfix">
+        <form class="layui-form">
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+                    <li><a th:href="@{index}">推流列表</a></li>
+                    <li class="layui-this">编辑</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item layui-show">
+                        <input type="hidden" name="id" th:value="${data?.id}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">名称：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" required lay-verify="required"
+                                       placeholder="请输入名称" autocomplete="off" class="layui-input"
+                                       th:value="${data?.name}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label required">RTSP地址：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="rtsp" required lay-verify="required"
+                                       placeholder="请输入RTSP地址" autocomplete="off" class="layui-input"
+                                       th:value="${data?.rtsp}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">自定义路径：</label>
+                            <div class="layui-input-inline" style="width:80%">
+                                <input type="text" name="path"
+                                       placeholder="/your/custom/path" autocomplete="off" class="layui-input"
+                                       th:value="${data?.path}">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="padding-left: 10px;">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'element', 'upload', 'md5'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.jquery;
+
+            form.on('submit(formDemo)', function (data) {
+                var params = $(data.form).serializeJson()
+                $.post('[[@{doAddPush}]]', JSON.stringify(params), function (res) {
+                    if (res && res.errCode == 0) {
+                        window.location.href = '[[@{index}]]';
+                    } else {
+                        layer.alert(res.errMsg, {icon: 2})
+                        return false;
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+</div>
