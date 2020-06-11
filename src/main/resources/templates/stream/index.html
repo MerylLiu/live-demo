@@ -41,7 +41,8 @@
 
     <script type="text/javascript">
         layui.use(['table', 'layer', 'jquery', 'code'], function () {
-            var $ = layui.$;
+            var $ = layui.$,
+                table = layui.table;
 
             $('.layui-btn').on('click', function () {
                 var id = $(this).data('id');
@@ -52,6 +53,9 @@
                     $.post('stopPush', JSON.stringify(params), function (res) {
                         if (res && res.errCode == 0) {
                             layer.msg('操作成功', {time: 500});
+                            table.reload("stream-table", {
+                                page: {curr: $(".layui-laypage-skip").find("input").val()}
+                            })
                         } else {
                             layer.alert(res.errMsg, {icon: 2})
                         }
