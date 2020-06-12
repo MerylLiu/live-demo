@@ -83,24 +83,6 @@ public class MediaUtil {
         }
 
         logger.info("开始推流");
-//        grabber.flush();
-//        while ((grabframe = grabber.grab()) != null) {
-//            // frame.showImage(grabframe);
-//            grabbedImage = converter.convert(grabframe);
-//            Frame rotatedFrame = converter.convert(grabbedImage);
-//
-//            if (startTime == 0) {
-//                startTime = System.currentTimeMillis();
-//            }
-//            recorder.setTimestamp(1000 * (System.currentTimeMillis() - startTime));
-//
-//            if (rotatedFrame != null && rotatedFrame.imageHeight > 0 && rotatedFrame.imageWidth > 0) {
-//                recorder.record(rotatedFrame);
-//            }
-//
-//            //Thread.sleep(40);
-//        }
-
         long err_index = 0;//采集或推流导致的错误次数test
         //连续五次没有采集到帧则认为视频采集结束，程序错误次数超过1次即中断程序
         for (int no_frame_index = 0; no_frame_index < 5 || err_index > 1; ) {

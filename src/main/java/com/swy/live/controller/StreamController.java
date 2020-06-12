@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import java.util.Map;
 
@@ -41,10 +40,24 @@ public class StreamController extends JdsController {
         return json("操作成功");
     }
 
+    @PostMapping("/startPush")
+    public Json startPush(@RequestBody Map param) {
+        Integer id = ConvertUtil.parseInt(param.get("id"));
+        streamService.startPush(id);
+        return json("操作成功");
+    }
+
     @PostMapping("/stopPush")
     public Json stopPush(@RequestBody Map param) {
         Integer id = ConvertUtil.parseInt(param.get("id"));
         streamService.stopPush(id);
+        return json("操作成功");
+    }
+
+    @PostMapping("/deletePush")
+    public Json deletePush(@RequestBody Map param) {
+        Integer id = ConvertUtil.parseInt(param.get("id"));
+        streamService.deletePush(id);
         return json("操作成功");
     }
 }

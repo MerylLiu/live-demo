@@ -28,12 +28,13 @@
                 <!--                <th lay-data="{type:'checkbox', fixed: 'left'}"></th>-->
                 <th lay-data="{field:'id', type:'numbers'}">序号</th>
                 <th lay-data="{field:'name', sort:true, width:200}">名称</th>
+                <th lay-data="{field:'status', width:80, templet:'#statusTpl',align:'center'}">状态</th>
                 <th lay-data="{field:'rtmp', sort:true}">播放地址</th>
                 <th lay-data="{field:'rtsp', sort:true}">源地址</th>
                 <th lay-data="{field:'create_date', width:180, sort: true, templet:function(d){return new Date(d.create_date).format('yyyy-MM-dd HH:mm');},align:'center'}">
                     创建日期
                 </th>
-                <th lay-data="{field:'id', width:80, templet:'#stopTpl',align:'center'}">操作</th>
+                <th lay-data="{field:'id', width:200, templet:'#stopTpl',align:'center'}">操作</th>
             </tr>
             </thead>
         </table>
@@ -46,10 +47,24 @@
 
             $('.layui-btn').on('click', function () {
                 var id = $(this).data('id');
-                layer.confirm('您确定要删除选中项么', {icon: 3, title: '提示'}, function (index) {
-                    var params = {
-                        "id": id
-                    };
+                var params = {
+                    "id": id
+                };
+
+                if ($(this).data('type') == 'start') {
+                    $.post('startPush', JSON.stringify(params), function (res) {
+                        if (res && res.errCode == 0) {
+                            layer.msg('操作成功', {time: 500});
+                            table.reload("stream-table", {
+                                page: {curr: $(".layui-laypage-skip").find("input").val()}
+                            })
+                        } else {
+                            layer.alert(res.errMsg, {icon: 2})
+                        }
+                    });
+                }
+
+                if ($(this).data('type') == 'stop') {
                     $.post('stopPush', JSON.stringify(params), function (res) {
                         if (res && res.errCode == 0) {
                             layer.msg('操作成功', {time: 500});
@@ -60,15 +75,43 @@
                             layer.alert(res.errMsg, {icon: 2})
                         }
                     });
-                });
+                }
+
+                if ($(this).data('type') == 'delete') {
+                    layer.confirm('您确定要删除选中项么', {icon: 3, title: '提示'}, function (index) {
+                        $.post('stopPush', JSON.stringify(params), function (res) {
+                            if (res && res.errCode == 0) {
+                                layer.msg('操作成功', {time: 500});
+                                table.reload("stream-table", {
+                                    page: {curr: $(".layui-laypage-skip").find("input").val()}
+                                })
+                            } else {
+                                layer.alert(res.errMsg, {icon: 2})
+                            }
+                        });
+                    });
+                }
             });
         });
     </script>
 
     <script type="text/html" id="stopTpl">
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="stop" data-id="{{d.id}}">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="stop" data-id="{{d.id}}" data-type="start">
+            <i class="layui-icon layui-icon-play"></i>开始
+        </a>
+        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="stop" data-id="{{d.id}}" data-type="stop">
             <i class="layui-icon layui-icon-pause"></i>停止
         </a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="stop" data-id="{{d.id}}" data-type="delete">
+            <i class="layui-icon layui-icon-delete"></i>删除
+        </a>
+    </script>
+
+    <script type="text/html" id="statusTpl">
+        {{#  if(d.status === 0){ }}已停止
+        {{#  } else if(d.status === 1) { }}
+        <span style="color: #F581B1;">推流中</span>
+        {{#  } }}
     </script>
 
 </div>

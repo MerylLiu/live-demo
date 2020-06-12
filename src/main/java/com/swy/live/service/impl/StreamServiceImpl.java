@@ -1,5 +1,6 @@
 package com.swy.live.service.impl;
 
+import com.extm.Db;
 import com.google.common.collect.ImmutableMap;
 import com.jds.core.common.BizException;
 import com.jds.core.common.KendoResult;
@@ -7,18 +8,25 @@ import com.jds.core.service.impl.BaseServiceImpl;
 import com.jds.core.utils.BaseUtil;
 import com.jds.core.utils.DateUtil;
 import com.jds.core.utils.QueryUtil;
+import com.swy.live.common.Action;
 import com.swy.live.service.StreamService;
+import com.swy.live.util.MediaUtil;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.FrameRecorder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UrlPathHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class StreamServiceImpl extends BaseServiceImpl implements StreamService {
+    private static Logger logger = LoggerFactory.getLogger(MediaUtil.class);
 
     @Override
     public KendoResult getPushedPaged(Map param) {
@@ -67,14 +75,52 @@ public class StreamServiceImpl extends BaseServiceImpl implements StreamService 
         String rtmp = String.format("rtmp://%s/hls/%s", rtmpAddr, path);
         param.put("rtmp", rtmp);
         param.put("create_date", DateUtil.getNow());
+        param.put("status", 0);
 
         db("stream").insert(param);
     }
 
     @Override
+    public void startPush(Integer id) {
+        Map data = db("stream").fields("rtsp", "rtmp").find("id = #{id}", ImmutableMap.of("id", id));
+        String input = data.get("rtsp").toString();
+        String output = data.get("rtmp").toString();
+
+        Map map = new HashMap();
+        map.put("status", 1);
+        db("stream").where("id = #{id}", ImmutableMap.of("id", id)).update(map);
+        push(input, output);
+    }
+
+    @Override
     public void stopPush(Integer id) {
+        Map map = new HashMap();
+        map.put("status", 0);
+        db("stream").where("id = #{id}", ImmutableMap.of("id", id)).update(map);
+    }
+
+    @Override
+    public void deletePush(Integer id) {
         if (!BaseUtil.isNullOrEmpty(id)) {
             db("stream").delete("id = #{id}", id);
+            stopPush(id);
         }
+    }
+
+    @Override
+    public void push(String inputUrl, String outputUrl) {
+        Thread thread = new Thread(() -> {
+            try {
+                try {
+                    MediaUtil.recordPush(inputUrl, outputUrl, 25);
+                } catch (FrameRecorder.Exception e) {
+                    logger.error("推流错误:{}", e.getMessage());
+                    e.printStackTrace();
+                }
+            } catch (FrameGrabber.Exception e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 }
