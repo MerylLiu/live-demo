@@ -28,7 +28,7 @@
                 <!--                <th lay-data="{type:'checkbox', fixed: 'left'}"></th>-->
                 <th lay-data="{field:'id', type:'numbers'}">序号</th>
                 <th lay-data="{field:'name', sort:true, width:200}">名称</th>
-                <th lay-data="{field:'status', width:80, templet:'#statusTpl',align:'center'}">状态</th>
+                <th lay-data="{field:'status', width:100, templet:'#statusTpl',align:'center'}">状态</th>
                 <th lay-data="{field:'rtmp', sort:true}">播放地址</th>
                 <th lay-data="{field:'rtsp', sort:true}">源地址</th>
                 <th lay-data="{field:'create_date', width:180, sort: true, templet:function(d){return new Date(d.create_date).format('yyyy-MM-dd HH:mm');},align:'center'}">
@@ -79,7 +79,7 @@
 
                 if ($(this).data('type') == 'delete') {
                     layer.confirm('您确定要删除选中项么', {icon: 3, title: '提示'}, function (index) {
-                        $.post('stopPush', JSON.stringify(params), function (res) {
+                        $.post('deletePush', JSON.stringify(params), function (res) {
                             if (res && res.errCode == 0) {
                                 layer.msg('操作成功', {time: 500});
                                 table.reload("stream-table", {
@@ -110,7 +110,9 @@
     <script type="text/html" id="statusTpl">
         {{#  if(d.status === 0){ }}已停止
         {{#  } else if(d.status === 1) { }}
-        <span style="color: #F581B1;">推流中</span>
+        <span style="color:#01AAED;">开始推流</span>
+        {{#  } else if(d.status === 2) { }}
+        <span style="color:#F581B1;">推流中</span>
         {{#  } }}
     </script>
 
