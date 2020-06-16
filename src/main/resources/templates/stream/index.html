@@ -45,13 +45,14 @@
             var $ = layui.$,
                 table = layui.table;
 
-            $('.layui-btn').on('click', function () {
-                var id = $(this).data('id');
+            //$('.layui-btn').on('click', function () {
+            table.on('row(apps)',function (obj) {
+                var id = obj.data.id;
                 var params = {
                     "id": id
                 };
 
-                if ($(this).data('type') == 'start') {
+                if ($(this).attr('data-type') == 'start') {
                     $.post('startPush', JSON.stringify(params), function (res) {
                         if (res && res.errCode == 0) {
                             layer.msg('操作成功', {time: 500});
@@ -102,7 +103,7 @@
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="stop" data-id="{{d.id}}" data-type="stop">
             <i class="layui-icon layui-icon-pause"></i>停止
         </a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="stop" data-id="{{d.id}}" data-type="delete">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" data-id="{{d.id}}" data-type="delete">
             <i class="layui-icon layui-icon-delete"></i>删除
         </a>
     </script>

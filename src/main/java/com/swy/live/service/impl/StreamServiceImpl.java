@@ -10,6 +10,7 @@ import com.jds.core.utils.DateUtil;
 import com.jds.core.utils.QueryUtil;
 import com.swy.live.common.Action;
 import com.swy.live.service.StreamService;
+import com.swy.live.util.ConvertVideoPakcet;
 import com.swy.live.util.MediaUtil;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameRecorder;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public class StreamServiceImpl extends BaseServiceImpl implements StreamService 
         Map map = new HashMap();
         map.put("status", 1);
         db("stream").where("id = #{id}", ImmutableMap.of("id", id)).update(map);
-        push(input, output);
+        push(input, output, id);
     }
 
     @Override
@@ -108,16 +110,15 @@ public class StreamServiceImpl extends BaseServiceImpl implements StreamService 
     }
 
     @Override
-    public void push(String inputUrl, String outputUrl) {
+    public void push(String inputUrl, String outputUrl, Integer streamId) {
         Thread thread = new Thread(() -> {
             try {
-                try {
-                    MediaUtil.recordPush(inputUrl, outputUrl, 25);
-                } catch (FrameRecorder.Exception e) {
-                    logger.error("推流错误:{}", e.getMessage());
-                    e.printStackTrace();
-                }
-            } catch (FrameGrabber.Exception e) {
+                Map map = new HashMap();
+                map.put("status", 2);
+                db("stream").where("id = #{id}", ImmutableMap.of("id", streamId)).update(map);
+//                new ConvertVideoPakcet().from(inputUrl).to(outputUrl).go();
+                new MediaUtil().recordPush(inputUrl, outputUrl, 25);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });

@@ -3,6 +3,6 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlite::resource:db/live-push.db
+    url: jdbc:sqlite::resource:db/live-push-demo.db
     username:
     password:

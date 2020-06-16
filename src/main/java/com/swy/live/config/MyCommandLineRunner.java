@@ -2,6 +2,7 @@ package com.swy.live.config;
 
 import com.extm.Db;
 import com.google.common.collect.ImmutableMap;
+import com.jds.core.utils.ConvertUtil;
 import com.swy.live.service.StreamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,10 +26,12 @@ public class MyCommandLineRunner implements CommandLineRunner {
             String inputUrl = p.get("rtsp").toString();
             String outputUrl = p.get("rtmp").toString();
 
+            Integer id = ConvertUtil.parseInt(p.get("id"));
+
             Map map = new HashMap();
             map.put("status", 1);
-            Db.table("stream").where("id = #{id}", ImmutableMap.of("id", p.get("id"))).update(map);
-            streamService.push(inputUrl, outputUrl);
+            Db.table("stream").where("id = #{id}", ImmutableMap.of("id", id)).update(map);
+            streamService.push(inputUrl, outputUrl, id);
         });
     }
 }
