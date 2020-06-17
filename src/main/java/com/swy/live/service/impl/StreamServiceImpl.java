@@ -1,6 +1,5 @@
 package com.swy.live.service.impl;
 
-import com.extm.Db;
 import com.google.common.collect.ImmutableMap;
 import com.jds.core.common.BizException;
 import com.jds.core.common.KendoResult;
@@ -8,12 +7,8 @@ import com.jds.core.service.impl.BaseServiceImpl;
 import com.jds.core.utils.BaseUtil;
 import com.jds.core.utils.DateUtil;
 import com.jds.core.utils.QueryUtil;
-import com.swy.live.common.Action;
 import com.swy.live.service.StreamService;
-import com.swy.live.util.ConvertVideoPakcet;
 import com.swy.live.util.MediaUtil;
-import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameRecorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -116,7 +111,6 @@ public class StreamServiceImpl extends BaseServiceImpl implements StreamService 
                 Map map = new HashMap();
                 map.put("status", 2);
                 db("stream").where("id = #{id}", ImmutableMap.of("id", streamId)).update(map);
-//                new ConvertVideoPakcet().from(inputUrl).to(outputUrl).go();
                 new MediaUtil().recordPush(inputUrl, outputUrl, 25);
             } catch (IOException e) {
                 e.printStackTrace();

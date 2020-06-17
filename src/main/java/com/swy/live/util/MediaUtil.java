@@ -103,6 +103,12 @@ public class MediaUtil {
             } catch (IOException e) {
                 err_index++;
             }
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         recorder.stop();
