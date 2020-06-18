@@ -16,9 +16,9 @@ import static org.bytedeco.ffmpeg.global.avcodec.av_packet_unref;
 public class MediaUtil {
     private static Logger logger = LoggerFactory.getLogger(MediaUtil.class);
 
-    public static void recordPush(String inputFile, String outputFile, int v_rs) throws FrameGrabber.Exception, FrameRecorder.Exception {
+    public static void recordPush(String inputFile, String outputFile, int frameRate)
+            throws FrameGrabber.Exception, FrameRecorder.Exception, InterruptedException {
         Loader.load(opencv_objdetect.class);
-        long startTime = 0;
 
         FFmpegFrameGrabber grabber = FFmpegFrameGrabber.createDefault(inputFile);
         logger.info("开始获取FrameGrabber ：" + grabber);
@@ -53,8 +53,8 @@ public class MediaUtil {
         //如果想要保存图片,可以使用 opencv_imgcodecs.cvSaveImage("hello.jpg", grabbedImage);來保存图片
         FFmpegFrameRecorder recorder;
         recorder = new FFmpegFrameRecorder(outputFile, grabber.getImageWidth(), grabber.getImageHeight());
-        recorder.setGopSize(v_rs);
-        recorder.setFrameRate(v_rs);
+        recorder.setGopSize(frameRate);
+        recorder.setFrameRate(frameRate);
         recorder.setVideoBitrate(40000);
         AVFormatContext fc = null;
         if (outputFile.indexOf("rtmp") >= 0 || outputFile.indexOf("flv") > 0) {
@@ -104,11 +104,7 @@ public class MediaUtil {
                 err_index++;
             }
 
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(50);
         }
 
         recorder.stop();

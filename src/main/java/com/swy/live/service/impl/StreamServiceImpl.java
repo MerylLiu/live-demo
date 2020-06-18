@@ -8,6 +8,7 @@ import com.jds.core.utils.BaseUtil;
 import com.jds.core.utils.DateUtil;
 import com.jds.core.utils.QueryUtil;
 import com.swy.live.service.StreamService;
+import com.swy.live.task.MediaThread;
 import com.swy.live.util.MediaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,16 +107,11 @@ public class StreamServiceImpl extends BaseServiceImpl implements StreamService 
 
     @Override
     public void push(String inputUrl, String outputUrl, Integer streamId) {
-        Thread thread = new Thread(() -> {
-            try {
-                Map map = new HashMap();
-                map.put("status", 2);
-                db("stream").where("id = #{id}", ImmutableMap.of("id", streamId)).update(map);
-                new MediaUtil().recordPush(inputUrl, outputUrl, 25);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        Map map = new HashMap();
+        map.put("status", 2);
+        db("stream").where("id = #{id}", ImmutableMap.of("id", streamId)).update(map);
+
+        Thread thread = new MediaThread(inputUrl, outputUrl, 25);
         thread.start();
     }
 }
